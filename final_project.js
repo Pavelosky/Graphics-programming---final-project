@@ -108,5 +108,5 @@ function mouseClicked() {
     freeze = true;
 
     // Save the image to a .png file
-    // bufferImage.save("image.png");
+    bufferImage.save("image.png");
 }
