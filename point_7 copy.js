@@ -1,4 +1,5 @@
 let img
+let treshold = 20
 
 function preload() {
     img = loadImage('image.png');
@@ -7,6 +8,9 @@ function preload() {
 function setup() {
     createCanvas(640, 120 * 5);
     pixelDensity(1);
+
+    tresholdSlider = createSlider(0, 255, 20);
+    tresholdSlider.position(20, 20);
     
     noStroke();
 }
@@ -17,7 +21,6 @@ function draw() {
 
     treshold = tresholdSlider.value();
 
-    // Convert to YCbCr
     loadPixels();
     for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
@@ -26,23 +29,22 @@ function draw() {
             let g = pixels[index + 1];
             let b = pixels[index + 2];
 
-            // Convert RGB to YCbCr
-            let yCbCr = rgbToYCbCr(r, g, b);
-
             // Set the pixel values to YCbCr
-            pixels[index] = yCbCr[0];
-            pixels[index + 1] = yCbCr[1];
-            pixels[index + 2] = yCbCr[2];
+            pixels[index] = treshold * r /10
+            pixels[index + 1] = g
+            pixels[index + 2] = b
         }
     }
+
+        // The result is different from the original image, 
+        // I really expercted to see the original image colors at some point when sliding the treshold slider
+    
     updatePixels();
     noStroke();
-}
 
-// Function to convert RGB to YCbCr
-function rgbToYCbCr(r, g, b) {
-    let y = 0.299 * r + 0.587 * g + 0.114 * b;
-    let cb = 128 - 0.168736 * r - 0.331264 * g + 0.5 * b;
-    let cr = 128 + 0.5 * r - 0.418688 * g - 0.081312 * b;
-    return [y, cb, cr];
-}
+    console.log(treshold)
+    }
+    
+    
+
+
