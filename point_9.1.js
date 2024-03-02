@@ -15,8 +15,6 @@ function draw() {
     background(0);
     image(img, 0, 0);
 
-    treshold = tresholdSlider.value();
-
     // Convert to YCbCr
     loadPixels();
     for (let y = 0; y < height; y++) {
