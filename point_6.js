@@ -15,7 +15,7 @@ function draw() {
     background(0);
     image(img, 0, 0);
 
-    // Convert image to grayscale and increase brightness by 20%
+    // Convert image to red pixels only
     loadPixels();
     for (let i = 0; i < pixels.length; i += 4) {
         let r = pixels[i];

@@ -40,7 +40,7 @@ function gotResults(err, result) {
     if (detections) {
         // console.log(detections)
         drawBox(detections);
-        drawLandmarks(detections);
+        // drawLandmarks(detections);
     }
 }
 
