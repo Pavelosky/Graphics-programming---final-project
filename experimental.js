@@ -1,4 +1,5 @@
 let img;
+let treshold = 20
 
 function preload() {
     img = loadImage('image.png');
@@ -7,7 +8,8 @@ function preload() {
 function setup() {
     createCanvas(1000, 120 * 5);
     pixelDensity(1);
-    
+
+
     noStroke();
 }
 
@@ -71,19 +73,111 @@ function redPixelsOnly(){
     return image;
 }
 
+function bluePixelsOnly(){
+    let image = createImage(img.width, img.height);
+    image.copy(img, 0, 0, img.width, img.height, 0, 0, img.width, img.height);
+    image.loadPixels();
+
+    for (let i = 0; i < image.pixels.length; i += 4) {
+        let r = image.pixels[i];
+        let g = image.pixels[i + 1];
+        let b = image.pixels[i + 2];
+
+        image.pixels[i] = 0;
+        image.pixels[i + 1] = 0;
+        image.pixels[i + 2] = b;
+    }
+    image.updatePixels();
+    return image;
+}
+
+function greenPixelsOnly(){
+    let image = createImage(img.width, img.height);
+    image.copy(img, 0, 0, img.width, img.height, 0, 0, img.width, img.height);
+    image.loadPixels();
+
+    for (let i = 0; i < image.pixels.length; i += 4) {
+        let r = image.pixels[i];
+        let g = image.pixels[i + 1];
+        let b = image.pixels[i + 2];
+
+        image.pixels[i] = 0;
+        image.pixels[i + 1] = g;
+        image.pixels[i + 2] = 0;
+    }
+    image.updatePixels();
+    return image;
+}
+
+function redTreshold(){
+    
+    let image = createImage(img.width, img.height);
+    image.copy(img, 0, 0, img.width, img.height, 0, 0, img.width, img.height);
+    image.loadPixels();
+
+    tresholdSlider = createSlider(0, 255, 20);
+    tresholdSlider.position(20, 20);
+    
+
+    treshold = tresholdSlider.value();
+
+    for (let i = 0; i < image.pixels.length; i += 4) {
+        let r = image.pixels[i];
+        let g = image.pixels[i + 1];
+        let b = image.pixels[i + 2];
+
+        image.pixels[i] = r;
+        image.pixels[i + 1] = treshold;
+        image.pixels[i + 2] = b;
+    }
+    image.updatePixels();
+    return image;
+}
+
+
+function blueTreshold(){
+    
+    let image = createImage(img.width, img.height);
+    image.copy(img, 0, 0, img.width, img.height, 0, 0, img.width, img.height);
+    image.loadPixels();
+
+    tresholdSlider = createSlider(0, 255, 20);
+    tresholdSlider.position(80, 80);
+    
+    treshold = tresholdSlider.value();
+
+    for (let i = 0; i < image.pixels.length; i += 4) {
+        let r = image.pixels[i];
+        let g = image.pixels[i + 1];
+        let b = image.pixels[i + 2];
+
+        image.pixels[i] = r;
+        image.pixels[i + 1] = g;
+        image.pixels[i + 2] = treshold;
+    }
+    image.updatePixels();
+    return image;
+}
+
+
+
 function draw() {
     background(0);
     image(img, 0, 0);
 
     // Create instances of ImageProcessor
-    const imageProcessor = new ImageProcessor(img, 0, 0, grayscale);
-    const imageRed = new ImageProcessor(img, 200, 200, redPixelsOnly);
+    const imageProcessor = new ImageProcessor(img, 0, 0, redTreshold);
+    const blueProcessor = new ImageProcessor(img, 200, 200, blueTreshold);
+    
 
     // Process the images
     imageProcessor.processImage();
-    imageRed.processImage();
+    blueProcessor.processImage();
+
 
     // Draw the processed images
     imageProcessor.draw();
-    imageRed.draw();
+    blueProcessor.draw();
+
+
 }
