@@ -10,6 +10,10 @@ let detections;
 let faceDetection;
 let bufferImage
 
+let slider1
+let slider2
+let slider3
+
 let imageLabels = [
     original,
     grayscale,
@@ -26,6 +30,7 @@ let imageLabels = [
 ];
 
 let objects = []
+
 
 
 // by default all options are set to true
@@ -72,12 +77,6 @@ class ImageProcessor {
         }
         processedImage.updatePixels();
         return processedImage;
-    }
-
-    drawSlider() {
-        // Draw the slider
-        // this.slider.slider.position(this.x, this.y + this.image.height + 10); // Adjust the position for better visualization
-        this.slider = new Slider(this.x, this.y + this.image.height + 10, 20);
     }
 
     draw() {
@@ -188,8 +187,7 @@ function bluePixelsOnly(r, g, b) {
     return [red, green, blue];
 }
 
-function redTreshold(g, b, treshold) {
-    // let slider1 = new Slider(20, 20, 20);
+function redTreshold(r, g, b) {
     treshold = slider1.getValue();
     let red = treshold;
     let green = g;
@@ -197,16 +195,16 @@ function redTreshold(g, b, treshold) {
     return [red, green, blue];
 }
 
-function greenTreshold(r, g, b, treshold) {
-    treshold = slider1.getValue();
+function greenTreshold(r, g, b) {
+    treshold = slider2.getValue();
     let red = r;
     let green = treshold;
     let blue = b;
     return [red, green, blue];
 }
 
-function blueTreshold(r, g, b, treshold) {
-    treshold = slider1.getValue();
+function blueTreshold(r, g, b) {
+    treshold = slider3.getValue();
     let red = r;
     let green = g;
     let blue = treshold;
@@ -253,11 +251,9 @@ function rgbToHsv(r, g, b) {
 function setup() {
     createCanvas(640, 120 * 5);
     pixelDensity(1)
-    // slider1 = new Slider(20, 20, 20);
     video = createCapture(VIDEO);;
     video.hide()
     noStroke()
-
 
 }
 
@@ -270,15 +266,7 @@ function draw() {
 
     if (snapshotMode) {
         bufferImage.resize(160, 120)
-
-        for (let i = 0; i < imageLabels.length; i++) {
-            let x = 160 * (i % 3);
-            let y = 120 * int(i / 3);
-    
-            const imageProcessor = new ImageProcessor(bufferImage, x, y, imageLabels[i]);
-            objects.push(imageProcessor);
-        }
-
+        
         for (let i = 0; i < objects.length; i++) {
             objects[i].processImage();
             objects[i].draw();
@@ -292,7 +280,17 @@ function mouseClicked() {
         bufferImage = createImage(video.width, video.height);
         bufferImage.copy(video, 0, 0, video.width, video.height, 0, 0, video.width, video.height);
 
+        for (let i = 0; i < imageLabels.length; i++) {
+            let x = 160 * (i % 3);
+            let y = 120 * int(i / 3);
+    
+            const imageProcessor = new ImageProcessor(bufferImage, x, y, imageLabels[i]);
+            objects.push(imageProcessor);
+        }
 
+        slider1 = new Slider(20, 330, 20);
+        slider2 = new Slider(180, 330, 20);
+        slider3 = new Slider(340, 330, 20);
 
         showCamera = false;
         snapshotMode = true;
