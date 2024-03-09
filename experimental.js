@@ -50,15 +50,9 @@ class ImageProcessor {
         return processedImage;
     }
 
-    drawSlider() {
-        // Draw the slider
-        // this.slider.slider.position(this.x, this.y + this.image.height + 10); // Adjust the position for better visualization
-        this.slider = new Slider(this.x, this.y + this.image.height + 10, 20);
-    }
-
     draw() {
         // Draw the processed image
-        image(this.processImage(), this.x, this.y);
+        image(this.image, this.x, this.y);
     }
 }
 
@@ -233,12 +227,12 @@ function draw() {
     image(img, 0, 0);
 
     // Create instances of ImageProcessor
-    const imageProcessor = new ImageProcessor(img, 0, 0, grayscale);
+    const imageProcessor = new ImageProcessor(img, 0, 0, faceDetection.setup);
     // const blueProcessor = new ImageProcessor(img, 200, 200, blueTreshold, slider2);
     
 
     // Process the images
-    imageProcessor.processImage();
+    // imageProcessor.processImage();
     // blueProcessor.processImage();
 
 

@@ -31,8 +31,6 @@ let imageLabels = [
 
 let objects = []
 
-
-
 // by default all options are set to true
 const detectionOptions = {
     withLandmarks: true,
@@ -99,7 +97,7 @@ class FaceDetection {
     modelReady() {
         console.log("ready!");
         console.log(this.faceapi);
-        this.faceapi.detectSingle(img, this.gotResults.bind(this));
+        this.faceapi.detectSingle(bufferImage, this.gotResults.bind(this));
     }
 
     gotResults(err, result) {
@@ -112,7 +110,7 @@ class FaceDetection {
 
         // background(220);
         background(255);
-        image(img, 0, 0, img.width, img.height);
+        image(bufferImage, 0, 0, bufferImage.width, bufferImage.height);
         if (this.detections) {
             // console.log(detections)
             this.drawBox(this.detections);
@@ -254,6 +252,7 @@ function setup() {
     video = createCapture(VIDEO);;
     video.hide()
     noStroke()
+    faceDetection = new FaceDetection();
 
 }
 
@@ -268,9 +267,9 @@ function draw() {
         bufferImage.resize(160, 120)
         
         for (let i = 0; i < objects.length; i++) {
-            objects[i].processImage();
             objects[i].draw();
-        }     
+        }
+        const faceDetectionProcessor = new ImageProcessor(bufferImage, 320, 0, faceDetection.setup);     
     }
 }
 
@@ -295,6 +294,7 @@ function mouseClicked() {
         showCamera = false;
         snapshotMode = true;
         snapshotTaken = true;
+        
         // Save the image to a .png file
         // bufferImage.save("image.png");
     }
