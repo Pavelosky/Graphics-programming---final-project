@@ -31,7 +31,7 @@ let imageLabels = [
     rgbToHsv
 ];
 
-let processedImages  = []
+let processedImages = []
 
 // by default all options are set to true
 const detectionOptions = {
@@ -86,20 +86,17 @@ class ImageProcessor {
 }
 
 class FaceDetection {
-    constructor() {
+    constructor(bufferImage, x, y) {
+        this.x = x;
+        this.y = y;
+        this.bufferImage = bufferImage;
         this.faceapi = ml5.faceApi(detectionOptions, this.modelReady.bind(this));
-    }
-
-    setup() {
-        createCanvas(600, 800);
-        background(220);
-        textAlign(RIGHT);
     }
 
     modelReady() {
         console.log("ready!");
         console.log(this.faceapi);
-        this.faceapi.detectSingle(bufferImage, this.gotResults.bind(this));
+        this.faceapi.detectSingle(this.bufferImage, this.gotResults.bind(this));
     }
 
     gotResults(err, result) {
@@ -110,35 +107,30 @@ class FaceDetection {
         // console.log(result)
         this.detections = result;
 
-        // background(220);
-        background(255);
-        image(bufferImage, 0, 0, bufferImage.width, bufferImage.height);
+        image(this.bufferImage, this.x, this.y, this.bufferImage.width, this.bufferImage.height);
         if (this.detections) {
             // console.log(detections)
             this.drawBox(this.detections);
-            this.drawLandmarks(this.detections);
         }
     }
 
     drawBox(detections) {
         const alignedRect = detections.alignedRect;
         const { _x, _y, _width, _height } = alignedRect._box;
+
+        // Center of the face detected in the new image position
+        const centerX = this.x + _x + _width / 2;
+        const centerY = this.y + _y + _height / 2;
+
+        // Calculate the width and height of the box based on the detected face
+        const boxWidth = _width * 1.2; // Adjusting the width of the box
+        const boxHeight = _height * 1.2; // Adjusting the height of the box
+
         noFill();
         stroke(161, 95, 251);
         strokeWeight(2);
-        rect(_x, _y, _width, _height);
-    }
-
-    drawLandmarks(detections) {
-        noFill();
-        stroke(161, 95, 251);
-        strokeWeight(2);
-
-        const landmarks = detections.landmarks._positions;
-
-        for (let i = 0; i < landmarks.length; i++) {
-            point(landmarks[i]._x, landmarks[i]._y);
-        }
+        rectMode(CENTER)
+        rect(centerX, centerY, boxWidth, boxHeight);
     }
 }
 
@@ -254,7 +246,6 @@ function setup() {
     video = createCapture(VIDEO);;
     video.hide()
     noStroke()
-    faceDetection = new FaceDetection();
 
 }
 
@@ -265,45 +256,46 @@ function draw() {
         image(video, 0, 0)
         textAlign(CENTER);
         fill(255)
-        text("Click your mouse to take a snapshot", width/2, height/2, 100, 100)
+        text("Click your mouse to take a snapshot", width / 2, height / 2, 100, 100)
     }
 
     if (snapshotMode) {
         bufferImage.resize(160, 120)
-        
+
         for (let i = 0; i < processedImages.length; i++) {
             processedImages[i].draw();
         }
-             
+
+        faceDetection.gotResults(null, faceDetection.detections);
     }
+
 }
 
 function mouseClicked() {
-    if(!snapshotTaken){
-       // Take a snapshot of the video
+    if (!snapshotTaken) {
+        // Take a snapshot of the video
         bufferImage = createImage(video.width, video.height);
         bufferImage.copy(video, 0, 0, video.width, video.height, 0, 0, video.width, video.height);
+
+        showCamera = false;
+        snapshotMode = true;
+        snapshotTaken = true;
 
         for (let i = 0; i < imageLabels.length; i++) {
             let x = 160 * (i % 3);
             let y = 120 * int(i / 3);
-    
+
             const imageProcessor = new ImageProcessor(bufferImage, x, y, imageLabels[i]);
             processedImages.push(imageProcessor);
         }
-        const faceDetectionProcessor = new ImageProcessor(bufferImage, 320, 0, faceDetection);
+
+        faceDetection = new FaceDetection(bufferImage, 0, 480);
         sliderRed = new Slider(20, 330, 20);
         sliderGreen = new Slider(180, 330, 20);
         sliderBlue = new Slider(340, 330, 20);
         sliderYCbCr = new Slider(180, 450, 20);
         sliderHSV = new Slider(340, 450, 20);
 
-        showCamera = false;
-        snapshotMode = true;
-        snapshotTaken = true;
-        
-        // Save the image to a .png file
-        // bufferImage.save("image.png");
     }
-    
+
 }
