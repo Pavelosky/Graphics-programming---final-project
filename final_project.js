@@ -10,9 +10,11 @@ let detections;
 let faceDetection;
 let bufferImage
 
-let slider1
-let slider2
-let slider3
+let sliderRed;
+let sliderGreen;
+let sliderBlue;
+let sliderYCbCr;
+let sliderHSV;
 
 let imageLabels = [
     original,
@@ -29,7 +31,7 @@ let imageLabels = [
     rgbToHsv
 ];
 
-let objects = []
+let processedImages  = []
 
 // by default all options are set to true
 const detectionOptions = {
@@ -186,7 +188,7 @@ function bluePixelsOnly(r, g, b) {
 }
 
 function redTreshold(r, g, b) {
-    treshold = slider1.getValue();
+    treshold = sliderRed.getValue();
     let red = treshold;
     let green = g;
     let blue = b;
@@ -194,7 +196,7 @@ function redTreshold(r, g, b) {
 }
 
 function greenTreshold(r, g, b) {
-    treshold = slider2.getValue();
+    treshold = sliderGreen.getValue();
     let red = r;
     let green = treshold;
     let blue = b;
@@ -202,7 +204,7 @@ function greenTreshold(r, g, b) {
 }
 
 function blueTreshold(r, g, b) {
-    treshold = slider3.getValue();
+    treshold = sliderBlue.getValue();
     let red = r;
     let green = g;
     let blue = treshold;
@@ -210,9 +212,9 @@ function blueTreshold(r, g, b) {
 }
 
 function rgbToYCbCr(r, g, b) {
-    let y = 0.299 * r + 0.587 * g + 0.114 * b;
-    let cb = 128 - 0.168736 * r - 0.331264 * g + 0.5 * b;
-    let cr = 128 + 0.5 * r - 0.418688 * g - 0.081312 * b;
+    let y = 0.299 * r + 0.587 * g + 0.114 * b * sliderYCbCr.getValue() / 100;
+    let cb = 128 - 0.168736 * r - 0.331264 * g + 0.5 * b * sliderYCbCr.getValue() / 100;
+    let cr = 128 + 0.5 * r - 0.418688 * g - 0.081312 * b * sliderYCbCr.getValue() / 100;
     return [y, cb, cr];
 }
 
@@ -240,9 +242,9 @@ function rgbToHsv(r, g, b) {
         }
     }
 
-    hConverted = h / 360 * 255;
-    sConverted = s * 255;
-    vConverted = v * 255;
+    hConverted = h / 360 * 255 * sliderHSV.getValue() / 255;
+    sConverted = s * 255 * sliderHSV.getValue() / 255;
+    vConverted = v * 255 * sliderHSV.getValue() / 255;
     return [hConverted, sConverted, vConverted];
 }
 
@@ -261,15 +263,18 @@ function draw() {
 
     if (showCamera) {
         image(video, 0, 0)
+        textAlign(CENTER);
+        fill(255)
+        text("Click your mouse to take a snapshot", width/2, height/2, 100, 100)
     }
 
     if (snapshotMode) {
         bufferImage.resize(160, 120)
         
-        for (let i = 0; i < objects.length; i++) {
-            objects[i].draw();
+        for (let i = 0; i < processedImages.length; i++) {
+            processedImages[i].draw();
         }
-        const faceDetectionProcessor = new ImageProcessor(bufferImage, 320, 0, faceDetection.setup);     
+             
     }
 }
 
@@ -284,12 +289,14 @@ function mouseClicked() {
             let y = 120 * int(i / 3);
     
             const imageProcessor = new ImageProcessor(bufferImage, x, y, imageLabels[i]);
-            objects.push(imageProcessor);
+            processedImages.push(imageProcessor);
         }
-
-        slider1 = new Slider(20, 330, 20);
-        slider2 = new Slider(180, 330, 20);
-        slider3 = new Slider(340, 330, 20);
+        const faceDetectionProcessor = new ImageProcessor(bufferImage, 320, 0, faceDetection);
+        sliderRed = new Slider(20, 330, 20);
+        sliderGreen = new Slider(180, 330, 20);
+        sliderBlue = new Slider(340, 330, 20);
+        sliderYCbCr = new Slider(180, 450, 20);
+        sliderHSV = new Slider(340, 450, 20);
 
         showCamera = false;
         snapshotMode = true;
