@@ -198,10 +198,11 @@ function bluePixelsOnly(r, g, b) {
     return [red, green, blue];
 }
 
-// Manipulate the red channel - this is ther reverse of the redPixelsOnly function. I actually expectected something else, but it makes sense 
-// to me now that I think about it. When only red channel is shown, the other channels are set to 0, so we see only red pixels at their original value.
-// When we manipulate the red channel, we set the other channels to their original value and the red channel to the value of the slider, therefore 
-// we can either remove the red pixels or make the image more red. - The same applies to the green and blue channels
+// Tresholding for the channels. - Originally I thought that this should be something else, only the last minute 
+// I realized that I should apply the tresholding to the channels as shown in the week 15-16 lecture.
+// This effect is quite interesting, but I think it's not as intuitive as the other effects. I also played around with 
+// different variations of the channels where for example I would set one channel to its original value and the other to be 
+// the tresholded value. I think that is a bit more interesting to watch, but I decided to stick with the original assignment.
 function redTreshold(r, g, b) {
     treshold = sliderRed.getValue();
 
@@ -238,7 +239,7 @@ function greenTreshold(r, g, b) {
 // Manipulate the blue channel
 function blueTreshold(r, g, b) {
     treshold = sliderBlue.getValue();
-    
+
     // Apply thresholding to the blue channel only
     if (b > treshold){
         b = 255;
