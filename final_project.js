@@ -294,6 +294,31 @@ function rgbToHsv(r, g, b) {
     return [hConverted, sConverted, vConverted];
 }
 
+// This is my additional creative effect. When I was implementing the treshold effect I played around with it a little,
+// and I thought it would be interesting to apply the tresholding to more than one channels at once. 
+function multipleTreshold(r, g, b) {
+    treshold = sliderMultipleTresh.getValue();
+
+    // Apply thresholding to the red channel only
+    if (r > treshold){
+        r = 255;
+    } else {
+        r = 0;
+    }
+
+    // Apply thresholding to the green channel only
+    if (g < treshold){
+        g = 0;
+    } else { 
+        g = 255;
+    }
+
+    let red = r;
+    let green = g;
+    let blue = b;
+    return [red, green, blue];
+}
+
 function setup() {
     createCanvas(160 * 3, 120 * 5);
     pixelDensity(1)
@@ -346,6 +371,9 @@ function mouseClicked() {
             processedImages.push(imageProcessor);
         }
 
+        const multTreshold = new ImageProcessor(bufferImage, 160, 480, multipleTreshold);
+        processedImages.push(multTreshold);
+
         // Create the face detection object
         faceDetection = new FaceDetection(bufferImage, 0, 480);
 
@@ -355,5 +383,6 @@ function mouseClicked() {
         sliderBlue = new Slider(340, 330, 20);
         sliderYCbCr = new Slider(180, 450, 20);
         sliderHSV = new Slider(340, 450, 20);
+        sliderMultipleTresh = new Slider(180, 570, 20);
     }
 }
