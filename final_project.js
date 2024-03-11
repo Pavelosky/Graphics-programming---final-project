@@ -1,3 +1,6 @@
+
+
+
 // initialize the video and the variables to control the mode of the application
 let video;
 
@@ -201,27 +204,51 @@ function bluePixelsOnly(r, g, b) {
 // we can either remove the red pixels or make the image more red. - The same applies to the green and blue channels
 function redTreshold(r, g, b) {
     treshold = sliderRed.getValue();
-    let red = treshold;
-    let green = g;
-    let blue = b;
+
+    // Apply thresholding to the red channel only
+    if (r > treshold){
+        r = 255;
+    } else {
+        r = 0;
+    }
+
+    let red = r;
+    let green = 0;
+    let blue = 0;
     return [red, green, blue];
 }
 
 // Manipulate the green channel
 function greenTreshold(r, g, b) {
     treshold = sliderGreen.getValue();
-    let red = r;
-    let green = treshold;
-    let blue = b;
+
+    // Apply thresholding to the green channel only
+    if (g > treshold){
+        g = 255;
+    } else {
+        g = 0;
+    }
+
+    let red = 0;
+    let green = g;
+    let blue = 0;
     return [red, green, blue];
 }
 
 // Manipulate the blue channel
 function blueTreshold(r, g, b) {
     treshold = sliderBlue.getValue();
-    let red = r;
-    let green = g;
-    let blue = treshold;
+    
+    // Apply thresholding to the blue channel only
+    if (b > treshold){
+        b = 255;
+    } else {
+        b = 0;
+    }
+
+    let red = 0;
+    let green = 0;
+    let blue = b;
     return [red, green, blue];
 }
 
