@@ -195,7 +195,7 @@ function bluePixelsOnly(r, g, b) {
     return [red, green, blue];
 }
 
-// Manipulate the red channel - this is ther reverse of the redPixelsOnly function. I actualle expectected something else, but it makes sense 
+// Manipulate the red channel - this is ther reverse of the redPixelsOnly function. I actually expectected something else, but it makes sense 
 // to me now that I think about it. When only red channel is shown, the other channels are set to 0, so we see only red pixels at their original value.
 // When we manipulate the red channel, we set the other channels to their original value and the red channel to the value of the slider, therefore 
 // we can either remove the red pixels or make the image more red. - The same applies to the green and blue channels
@@ -228,7 +228,7 @@ function blueTreshold(r, g, b) {
 // Make the colorspace conversion to YCbCr. This one I find the most fascinating and I can't quite figure it out.
 // I was able to apply the math to the pixels and get the results, but it's hard for me to grasp the way the colors change in the image.
 // As you move the slider, the image changes in a very unexpected way. On right end it resembles the image where blue pixels are removed, 
-// but as you move the slider to the right, the image becomes to look unnatural. I think it's because the YCbCr color space is not as intuitive as RGB.
+// but as you move the slider to the left, the image becomes to look unnatural. I think it's because the YCbCr color space is not as intuitive as RGB.
 function rgbToYCbCr(r, g, b) {
     let y = 0.299 * r + 0.587 * g + 0.114 * b * sliderYCbCr.getValue() / 100;
     let cb = 128 - 0.168736 * r - 0.331264 * g + 0.5 * b * sliderYCbCr.getValue() / 100;
@@ -317,7 +317,7 @@ function mouseClicked() {
             const imageProcessor = new ImageProcessor(bufferImage, x, y, imageLabels[i]);
             processedImages.push(imageProcessor);
         }
-        
+
         // Create the face detection object
         faceDetection = new FaceDetection(bufferImage, 0, 480);
 
