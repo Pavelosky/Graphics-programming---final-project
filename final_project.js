@@ -1,5 +1,34 @@
+/*
+GRAPHICS PROGRAMMING FINAL PROJECT - 210323041
 
+This project was quite a challenge for me, but still one of the most enjoyable projects I've done so far. 
+Before, I didn't even know there were other color spaces than RGB. 
+The main problem I faced was to create classes and connect them so that they work perfectly together. 
+Although I was able to find solutions to all the issues that I had and my code runs well, 
+I know there are better ways to do it. For my midterm submission, 
+I got a comment about the Hare and Tortoise story, and for my final, I've made the same mistake. 
+I didn't dedicate enough time to the project. I also didn't do any original extensions to the project. 
 
+That being said, for the part I did do, I think I did pretty well. 
+I used classes, functions and loops to make my code as OO as I could, 
+I minimized hardcoding any values and tried to keep good coding practices. 
+I used big chunk of the code provided by ml5.js to create a class FaceDetection, 
+but I modified the code a little to fit into my project better. 
+For every effect I created the separate function. These functions are then passed on to the 
+ImageProcessor object. In my opinion, this makes the code more readable and easier to understand. 
+Creating functions for each effect made the code easy to modify. 
+There was a moment when I realized that the treshold effect should be something else than I originally thought. 
+Adding few lines of code to the function solved the problem without creating any bugs, 
+or any big modifications to the rest of the code. Also, when I wanted to add one more effect 
+it was as easy as creating new object and applying a newly created function to it.
+
+Overall I've learned a lot making this project and I'm happy about it, 
+even though I didn't complete all the points. If I were to change something in it, 
+I'd split the ImageProcessor class into smaller pieces and create a separate class for the final image. 
+This would make the code a bit more flexible.
+
+More commentary can be found directly above the functions.
+*/
 
 // initialize the video and the variables to control the mode of the application
 let video;
@@ -97,7 +126,8 @@ class ImageProcessor {
     }
 }
 
-// FaceDetection class to detect the face in the image - this class is based on the example provided by ml5.js with some modifications needed to fit the project
+// FaceDetection class to detect the face in the image - this class is based on the example provided by ml5.js 
+// with some modifications needed to fit the project.
 class FaceDetection {
     constructor(bufferImage, x, y) {
         this.x = x;
@@ -147,7 +177,7 @@ class FaceDetection {
     }
 }
 
-// Original image - it returns the original values of the pixels
+// Original image - it returns the original values of the pixels.
 function original(r, g, b) {
     return [r, g, b];
 }
@@ -294,8 +324,9 @@ function rgbToHsv(r, g, b) {
     return [hConverted, sConverted, vConverted];
 }
 
-// This is my additional creative effect. When I was implementing the treshold effect I played around with it a little,
-// and I thought it would be interesting to apply the tresholding to more than one channels at once. 
+// This is my additional creative effect. When I was implementing the treshold effect I played around 
+// with it a little, and I thought it would be interesting to apply the tresholding to more than one 
+// channels at once. 
 function multipleTreshold(r, g, b) {
     treshold = sliderMultipleTresh.getValue();
 
