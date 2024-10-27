@@ -2,6 +2,8 @@
 ## CM2030 – Graphics Programming
 ### Final Coursework: An image processing application
 
+View the application [here](https://pavelosky.github.io/Graphics-programming---final-project/)
+
 For this assignment, you will develop an image processing application. You will utilize the webcam to perform several image processing manipulations such as image thresholding and color space conversions. You will also use face detection to perform some privacy-enhancing filters such as face blur and pixelate. You will earn individual points for each requirement and points for the overall performance, i.e., is the logic of the application simple or complex and confusing, are there any bugs during execution, etc. You will need to justify your answer for a few of these tasks – use commentary to discuss that. You can only use the libs shown in this course, and no external code will be allowed. All the code should be your own work. The following grid of images should be expected to appear at your browser when executing the app.
 
 - Webcam image
@@ -43,39 +45,3 @@ For this assignment, you will develop an image processing application. You will 
         iv. Paint the entire block using the average pixel intensity. Utilize this command: outimage.set(x, y, avePixInt); 
         v. Loop through all blocks repeating steps iii and iv. Display the images at the correct position in the grid again.
 
-### Coding Style:
-1. Code presentation: use appropriate syntax, comments, consistent indentation, and leftover code blocks
-2. Code competency: use of object orientation, code reusability, use of functions, variables global vs local
-
-### Extension:
-Since this is a creative module, we would like to give more marks for implementing further ideas. Also, you should write some words about it in the commentary. Please note that we will award marks for the uniqueness of your extension and how technically challenging it appears to have been. The extension is worth 20% of your mark.
-
-### Commentary:
-- Discuss your findings e.g. image thresholding using each color channel
-- What problems have you faced and were you able to solve them?
-- Were you on target to successfully complete your project? If not, how would you address the issue/s and do things differently?
-- Also, discuss your extension and why it is a unique idea
-
-### Submission Requirements:
-1. Compress all your code in .ZIP format and upload it in the first prompt
-2. Upload the video demo in .mp4 format in the second prompt
-3. Use alternative video submission link to upload the video demo to YouTube or similar, then submit the URL only in the third prompt. Make sure your video remains unlisted.
-4. Merge all your .js code in a single file, then upload it in the last prompt. Use the JavaScript Bundler Tool (see previous learning item) to merge all your .js files into a single .txt file. Exclude any libraries you used such as p5.js, matter.js etc. This is a submission requirement as we need this to run your code.
-
-### Rubric:
-- Program runs and without errors? (check console)
-- Program is usable e.g. easy to use without confusing behavior
-- Image loaded from the webcam
-- Grayscale conversion
-- Brightness increase to 20%
-- Added brightness not to exceed 255 pixel intensity
-- Split image into three channels
-- Perform image thresholding for each channel with the use of a slider to adjust values
-- Color space conversion #1
-- Color space conversion #2
-- Perform image thresholding for color space #1 [1 point if you use static threshold] or [2 points with a use of a slider to adjust values]
-- Perform image thresholding for color space #2 [1 point if you use static threshold] or [2 points with a use of a slider to adjust values]
-- Face detection works using a bounding box
-- Replace the detected face image with a grayscale converted image
-- Replace the detected face image with a blurred image
-- Replace the detected face
